@@ -1,0 +1,18 @@
+[gd_resource type="Theme" load_steps=3 format=3 uid="uid://esj0ngjbhb5f"]
+
+[ext_resource type="FontFile" uid="uid://c3kuiajenxgpg" path="res://Assets/Fonts/Kenney Future Narrow.ttf" id="1_hmvin"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_h8ab6"]
+
+[resource]
+Label/colors/font_color = Color(0.654902, 0.384314, 0.0823529, 1)
+Label/colors/font_outline_color = Color(1, 1, 1, 0.792157)
+Label/colors/font_shadow_color = Color(0, 0, 0, 0.607843)
+Label/constants/line_spacing = 3
+Label/constants/outline_size = 10
+Label/constants/shadow_offset_x = 1
+Label/constants/shadow_offset_y = 1
+Label/constants/shadow_outline_size = 14
+Label/font_sizes/font_size = 48
+Label/fonts/font = ExtResource("1_hmvin")
+Label/styles/normal = SubResource("StyleBoxEmpty_h8ab6")

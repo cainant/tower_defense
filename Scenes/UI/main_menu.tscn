@@ -1,0 +1,131 @@
+[gd_scene load_steps=5 format=3 uid="uid://bcm2e2005bpc7"]
+
+[ext_resource type="Texture2D" uid="uid://ce05rvc0h8b4n" path="res://Assets/UI/Art/main_menu_background.png" id="1_i60n6"]
+[ext_resource type="Texture2D" uid="uid://be5pcqtqa0m53" path="res://Assets/UI/Buttons/button_rectangle_flat.png" id="2_qrgy3"]
+[ext_resource type="Texture2D" uid="uid://b180tmliu5wvy" path="res://Assets/UI/Buttons/button_rectangle_gradient.png" id="3_c7s76"]
+[ext_resource type="Theme" uid="uid://esj0ngjbhb5f" path="res://Assets/Themes/label_theme.tres" id="4_qodw7"]
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_i60n6")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 50
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_constants/separation = 30
+alignment = 1
+
+[node name="NewGameButton" type="TextureButton" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(350, 75)
+layout_mode = 2
+size_flags_horizontal = 0
+texture_normal = ExtResource("2_qrgy3")
+texture_pressed = ExtResource("3_c7s76")
+stretch_mode = 0
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/NewGameButton"]
+texture_filter = 2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("4_qodw7")
+text = "New Game"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextureButton2" type="TextureButton" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(350, 75)
+layout_mode = 2
+size_flags_horizontal = 0
+texture_normal = ExtResource("2_qrgy3")
+texture_pressed = ExtResource("3_c7s76")
+stretch_mode = 0
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/TextureButton2"]
+texture_filter = 2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("4_qodw7")
+text = "License
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextureButton3" type="TextureButton" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(350, 75)
+layout_mode = 2
+size_flags_horizontal = 0
+texture_normal = ExtResource("2_qrgy3")
+texture_pressed = ExtResource("3_c7s76")
+stretch_mode = 0
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/TextureButton3"]
+texture_filter = 2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("4_qodw7")
+text = "ABOUT
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="ExitButton" type="TextureButton" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(350, 75)
+layout_mode = 2
+size_flags_horizontal = 0
+texture_normal = ExtResource("2_qrgy3")
+texture_pressed = ExtResource("3_c7s76")
+stretch_mode = 0
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ExitButton"]
+texture_filter = 2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("4_qodw7")
+text = "EXIT"
+horizontal_alignment = 1
+vertical_alignment = 1
