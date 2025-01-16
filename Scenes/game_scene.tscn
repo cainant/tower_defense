@@ -1,7 +1,71 @@
-[gd_scene load_steps=2 format=3 uid="uid://cwt623k5vellj"]
+[gd_scene load_steps=5 format=3 uid="uid://cwt623k5vellj"]
 
 [ext_resource type="PackedScene" uid="uid://cbtxfa2g25dov" path="res://Scenes/Maps/map_1.tscn" id="1_r3bbh"]
+[ext_resource type="Texture2D" uid="uid://bj2yk2rf23qjy" path="res://Assets/UI/Buttons/button_square_flat.png" id="2_bwonx"]
+[ext_resource type="Texture2D" uid="uid://cljsi35cto863" path="res://Assets/Towers/towerDefense_tile249.png" id="3_bx0ld"]
+[ext_resource type="Texture2D" uid="uid://dj8pilwv1urma" path="res://Assets/Towers/towerDefense_tile251.png" id="4_lsqyl"]
 
 [node name="GameScene" type="Node"]
 
 [node name="Map1" parent="." instance=ExtResource("1_r3bbh")]
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="HUD" type="Control" parent="UI"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BuildBar" type="VBoxContainer" parent="UI/HUD"]
+custom_minimum_size = Vector2(100, 400)
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -400.0
+offset_right = 100.0
+grow_vertical = 0
+theme_override_constants/separation = 25
+
+[node name="Gun" type="TextureButton" parent="UI/HUD/BuildBar"]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+size_flags_horizontal = 4
+texture_normal = ExtResource("2_bwonx")
+stretch_mode = 0
+
+[node name="TextureRect" type="TextureRect" parent="UI/HUD/BuildBar/Gun"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 5.0
+offset_top = 5.0
+offset_right = -5.0
+offset_bottom = -5.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_bx0ld")
+
+[node name="Missile" type="TextureButton" parent="UI/HUD/BuildBar"]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+size_flags_horizontal = 4
+texture_normal = ExtResource("2_bwonx")
+stretch_mode = 0
+
+[node name="TextureRect" type="TextureRect" parent="UI/HUD/BuildBar/Missile"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 5.0
+offset_top = 5.0
+offset_right = -5.0
+offset_bottom = -5.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_lsqyl")
