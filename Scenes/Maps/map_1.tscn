@@ -1,13 +1,9 @@
-[gd_scene load_steps=16 format=4 uid="uid://cbtxfa2g25dov"]
+[gd_scene load_steps=13 format=4 uid="uid://cbtxfa2g25dov"]
 
 [ext_resource type="Texture2D" uid="uid://ccx5o4jcvio10" path="res://Assets/Environment/Tilesets/terrainTiles_default.png" id="1_b8ks5"]
 [ext_resource type="Texture2D" uid="uid://cqodk7sh74rfv" path="res://Assets/Environment/Props/treeBrown_large.png" id="2_1k38e"]
+[ext_resource type="Texture2D" uid="uid://bhgmfdqppfb0f" path="res://Assets/Environment/Props/Obstructed.png" id="2_ndrrk"]
 [ext_resource type="Texture2D" uid="uid://dds5gojts1oyh" path="res://Assets/Environment/Props/treeGreen_large.png" id="3_87fsc"]
-[ext_resource type="PackedScene" uid="uid://dmadnysbkspje" path="res://Scenes/Turrets/gun_tier_1.tscn" id="4_spner"]
-[ext_resource type="PackedScene" uid="uid://sawj7tnx4g6f" path="res://Scenes/Turrets/gun_tier_2.tscn" id="5_wqbbm"]
-[ext_resource type="PackedScene" uid="uid://bc7hv5pw8wj4i" path="res://Scenes/Turrets/missile_tier_1.tscn" id="6_2naxp"]
-[ext_resource type="Script" path="res://Scenes/Turrets/gun_tier_2.gd" id="6_36vji"]
-[ext_resource type="Script" path="res://Scenes/Turrets/missile_tier_1.gd" id="8_4gwrt"]
 
 [sub_resource type="TileMapPattern" id="TileMapPattern_p24ws"]
 tile_data = PackedInt32Array(0, 0, 0, 65536, 0, 1)
@@ -60,6 +56,11 @@ texture_region_size = Vector2i(64, 64)
 tile_size = Vector2i(64, 64)
 sources/0 = SubResource("TileSetAtlasSource_vo3xn")
 pattern_0 = SubResource("TileMapPattern_p24ws")
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_k8xk0"]
+texture = ExtResource("2_ndrrk")
+texture_region_size = Vector2i(64, 64)
+1:0/0 = 0
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_n51np"]
 texture = ExtResource("1_b8ks5")
@@ -173,6 +174,7 @@ terrain_set_0/terrain_0/color = Color(0.5, 0.34375, 0.25, 1)
 sources/1 = SubResource("TileSetAtlasSource_n51np")
 sources/2 = SubResource("TileSetAtlasSource_tllhm")
 sources/3 = SubResource("TileSetAtlasSource_cbipu")
+sources/0 = SubResource("TileSetAtlasSource_k8xk0")
 
 [node name="Map1" type="Node2D"]
 
@@ -184,15 +186,4 @@ tile_set = SubResource("TileSet_twf2i")
 tile_map_data = PackedByteArray("AAD+/wkAAQAFAAEAAAD//wkAAQACAAAAAAAAAAkAAQACAAAAAAABAAkAAQACAAAAAAACAAkAAQACAAAAAAADAAkAAQACAAAAAAAEAAkAAQAGAAEAAAAEAAgAAQABAAAAAAAEAAcAAQABAAAAAAAEAAYAAQABAAAAAAAEAAUAAQADAAEAAAAFAAUAAQACAAAAAAAGAAUAAQACAAAAAAAHAAUAAQACAAAAAAAIAAUAAQAEAAAAAAAIAAYAAQABAAAAAAAIAAcAAQAFAAEAAAALAAcAAQACAAAAAAAMAAcAAQAGAAEAAAAMAAYAAQABAAAAAAAMAAUAAQABAAAAAAAMAAQAAQABAAAAAAAMAAMAAQADAAAAAAAMAAIAAQAEAAEAAAALAAIAAQACAAAAAAAKAAIAAQACAAAAAAAJAAIAAQACAAAAAAAIAAIAAQADAAEAAAAIAAMAAQABAAAAAAAIAAQAAQABAAAAAAANAAMAAQACAAAAAAAOAAMAAQACAAAAAAAPAAMAAQAGAAEAAAAPAAIAAQABAAAAAAAPAAEAAQADAAEAAAAQAAEAAQACAAAAAAARAAEAAQACAAAAAAASAAEAAQAEAAEAAAASAAIAAQAFAAEAAAATAAIAAQACAAAAAAAUAAIAAQAGAAEAAAAJAAcAAQACAAAAAAAKAAcAAQACAAAAAAARAAoAAgAAAAAAAAARAAcAAgAAAAAAAAAQAAUAAgAAAAAAAAAOAAUAAgAAAAAAAAAKAAQAAgAAAAAAAAADAAEAAgAAAAAAAAAIAAoAAgAAAAAAAAANAAEAAgAAAAAAAAAGAAgAAgAAAAAAAAAOAAkAAwAAAAAAAAAMAAkAAwAAAAAAAAAHAAcAAwAAAAAAAAACAAIAAwAAAAAAAAAEAAMAAwAAAAAAAAACAAQAAwAAAAAAAAAKAAYAAwAAAAAAAAACAAoAAwAAAAAAAAAFAAoAAwAAAAAAAAASAAQAAwAAAAAAAAANAAcAAwAAAAAAAAA=")
 tile_set = SubResource("TileSet_rp5wy")
 
-[node name="Node" type="Node" parent="."]
-
-[node name="GunTier1" parent="Node" instance=ExtResource("4_spner")]
-position = Vector2(471, 294)
-
-[node name="GunTier2" parent="Node" instance=ExtResource("5_wqbbm")]
-position = Vector2(226, 552)
-script = ExtResource("6_36vji")
-
-[node name="MissileTier1" parent="Node" instance=ExtResource("6_2naxp")]
-position = Vector2(472, 413)
-script = ExtResource("8_4gwrt")
+[node name="Towers" type="Node" parent="."]
