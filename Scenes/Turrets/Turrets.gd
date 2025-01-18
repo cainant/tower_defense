@@ -1,9 +1,36 @@
 extends Node2D
 
+var enemy_array = []
+var built = false
+var tower_type
+var enemy
+
+func _ready() -> void:
+	if built:
+		var radius = 0.5 * GameData.tower_info[tower_type]['range']
+		self.get_node('Range/RangeShape').get_shape().radius = radius
+		pass
+
 func _physics_process(_delta: float) -> void:
-	turn()
-	
+	if enemy_array.size() != 0 and built:
+		select_enemy()
+		turn()
+	else:
+		enemy = null
 	
 func turn():
-	var enemy_pos = get_global_mouse_position()
-	get_node("Turret").look_at(enemy_pos)
+	get_node("Turret").look_at(enemy.position)
+
+func select_enemy() -> void:
+	var enemy_progress_array = []
+	for enemy in enemy_array:
+		enemy_progress_array.append(enemy.progress)
+	var max_progress = enemy_progress_array.max()
+	var enemy_idx = enemy_progress_array.find(max_progress)
+	enemy = enemy_array[enemy_idx]
+
+func _on_range_body_entered(body: Node2D) -> void:
+	enemy_array.push_back(body.get_parent())
+
+func _on_range_body_exited(body: Node2D) -> void:
+	enemy_array.erase(body.get_parent())

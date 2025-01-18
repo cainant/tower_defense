@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://cwt623k5vellj"]
+[gd_scene load_steps=10 format=3 uid="uid://cwt623k5vellj"]
 
 [ext_resource type="Script" path="res://Scenes/game_scene.gd" id="1_prmo1"]
 [ext_resource type="PackedScene" uid="uid://cbtxfa2g25dov" path="res://Scenes/Maps/map_1.tscn" id="1_r3bbh"]
@@ -6,6 +6,9 @@
 [ext_resource type="Texture2D" uid="uid://cljsi35cto863" path="res://Assets/Towers/towerDefense_tile249.png" id="3_bx0ld"]
 [ext_resource type="Script" path="res://Scenes/UI/ui.gd" id="3_xtrlb"]
 [ext_resource type="Texture2D" uid="uid://dj8pilwv1urma" path="res://Assets/Towers/towerDefense_tile251.png" id="4_lsqyl"]
+[ext_resource type="Texture2D" uid="uid://bii3hqbaphoif" path="res://Assets/UI/Icons/right.png" id="7_klvew"]
+[ext_resource type="Texture2D" uid="uid://dohcbe6edsdrm" path="res://Assets/UI/Icons/pause.png" id="8_djfty"]
+[ext_resource type="Texture2D" uid="uid://24fkbfdnyy8k" path="res://Assets/UI/Icons/fastForward.png" id="9_lw7n3"]
 
 [node name="GameScene" type="Node2D"]
 script = ExtResource("1_prmo1")
@@ -74,3 +77,35 @@ offset_bottom = -5.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("4_lsqyl")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/HUD"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -224.0
+offset_top = -120.0
+offset_right = -20.0
+offset_bottom = -20.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="PausePlay" type="TextureButton" parent="UI/HUD/HBoxContainer"]
+process_mode = 3
+custom_minimum_size = Vector2(70, 70)
+layout_mode = 2
+toggle_mode = true
+texture_normal = ExtResource("7_klvew")
+texture_pressed = ExtResource("8_djfty")
+stretch_mode = 3
+
+[node name="FastFoward" type="TextureButton" parent="UI/HUD/HBoxContainer"]
+custom_minimum_size = Vector2(70, 70)
+layout_mode = 2
+texture_normal = ExtResource("9_lw7n3")
+stretch_mode = 3
+
+[connection signal="pressed" from="UI/HUD/HBoxContainer/PausePlay" to="UI" method="_on_pause_play_pressed"]
+[connection signal="pressed" from="UI/HUD/HBoxContainer/FastFoward" to="UI" method="_on_fast_foward_pressed"]
