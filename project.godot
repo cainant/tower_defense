@@ -18,7 +18,6 @@ config/icon="res://icon.svg"
 [autoload]
 
 GameData="*res://Singletons/game_data.gd"
-StringUtil="*res://Singletons/string_util.gd"
 
 [display]
 
