@@ -1,5 +1,8 @@
 extends CanvasLayer
 
+@onready var hp_bar = get_node("HUD/Status_bar/Hbox_container/Hp_bar")
+
+
 var red_color = Color(0.863, 0, 0.031, 0.75)
 var green_color = Color(0, 0.615, 0.268, .95)
 
@@ -31,6 +34,10 @@ func update_tower_preview(tile_pos: Vector2, build_valid: bool):
 	get_node('TowerPreview/DragTower').modulate = green_color if build_valid else red_color
 	get_node('TowerPreview/RangeTexture').modulate = green_color if build_valid else red_color
 
+func update_hp_bar(player_hp):
+	var hp_bar_tween = create_tween()
+	hp_bar_tween.tween_property(hp_bar, "value", player_hp, 0.1).set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN)
+	#search for godot tween cheat sheet to understand better transistion_type and easing type
 
 func _on_pause_play_pressed() -> void:
 	if self.get_parent().build_mode:

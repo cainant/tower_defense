@@ -4,6 +4,7 @@ var enemy_array = []
 var built = false
 var tower_type
 var enemy
+var tower_ready = true
 
 func _ready() -> void:
 	if built:
@@ -15,11 +16,23 @@ func _physics_process(_delta: float) -> void:
 	if enemy_array.size() != 0 and built:
 		select_enemy()
 		turn()
+		if tower_ready:
+			shoot()
 	else:
 		enemy = null
 	
 func turn():
 	get_node("Turret").look_at(enemy.position)
+
+func shoot():
+	tower_ready = false
+	var damage = GameData.tower_info[tower_type]["damage"]
+	enemy.on_take_damage(damage)
+	
+	var rof = GameData.tower_info[tower_type]["rate"]
+	await get_tree().create_timer(rof).timeout
+	
+	tower_ready = true
 
 func select_enemy() -> void:
 	var enemy_progress_array = []

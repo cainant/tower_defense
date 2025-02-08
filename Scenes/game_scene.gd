@@ -1,6 +1,11 @@
 extends Node2D
 
+signal game_end(result)
+
 var map_node
+@onready var ui = %UI 
+
+var player_hp = 100
 
 func _ready():
 	map_node = get_node('Map1')
@@ -88,7 +93,15 @@ func retrieve_wave_data():
 func spawn_enemies(wave_data):
 	for enemy in wave_data:
 		var new_enemy = load("res://Scenes/Enemies/%s.tscn" % [enemy[0]]).instantiate()
+		new_enemy.connect("life_damage", Callable(self, "life_base_damage"))
 		map_node.get_node('Path').add_child(new_enemy, true)
 		await get_tree().create_timer(enemy[1]).timeout
+
+func life_base_damage(damage):
+	var new_hp = player_hp - damage
+	player_hp = max(new_hp, 0)
 	
-	
+	if player_hp <= 0:
+		emit_signal("game_end", false)
+	else:
+		get_node('UI').update_hp_bar(player_hp)
