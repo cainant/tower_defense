@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://d2n5ql7c18apc"]
+
+[ext_resource type="Texture2D" uid="uid://dj8pilwv1urma" path="res://Assets/Towers/towerDefense_tile251.png" id="1_8p54y"]
+[ext_resource type="Script" path="res://Scenes/bullet/projectile.gd" id="1_ymee7"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_i7w44"]
+size = Vector2(34, 12)
+
+[node name="Projectile" type="Area2D"]
+collision_layer = 2
+script = ExtResource("1_ymee7")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-1, 0)
+shape = SubResource("RectangleShape2D_i7w44")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_8p54y")
+
+[node name="Timer" type="Timer" parent="."]

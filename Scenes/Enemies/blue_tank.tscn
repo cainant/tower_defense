@@ -12,6 +12,7 @@ loop = false
 script = ExtResource("1_d5geh")
 
 [node name="CharacterBody2D" type="CharacterBody2D" parent="."]
+collision_mask = 2
 
 [node name="Sprite2D" type="Sprite2D" parent="CharacterBody2D"]
 texture = ExtResource("1_31tau")

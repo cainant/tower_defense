@@ -13,26 +13,53 @@ func _ready() -> void:
 		pass
 
 func _physics_process(_delta: float) -> void:
-	if enemy_array.size() != 0 and built:
-		select_enemy()
-		turn()
-		if tower_ready:
-			shoot()
+	if built:
+		if tower_type == "minigun_tier_1":
+			if tower_ready:
+				shoot()
+		elif enemy_array.size() != 0:
+			select_enemy()
+			turn()
+			if tower_ready:
+				shoot()
 	else:
 		enemy = null
-	
+
 func turn():
 	get_node("Turret").look_at(enemy.position)
 
 func shoot():
-	tower_ready = false
-	var damage = GameData.tower_info[tower_type]["damage"]
-	enemy.on_take_damage(damage)
-	
-	var rof = GameData.tower_info[tower_type]["rate"]
-	await get_tree().create_timer(rof).timeout
-	
-	tower_ready = true
+	if tower_type == "minigun_tier_1":
+		tower_ready = false
+		var rof = GameData.tower_info[tower_type]["rate"]
+
+		
+		var projectile = preload("res://Scenes/bullet/projectile.tscn").instantiate()
+		get_parent().add_child(projectile)
+
+		
+		projectile.position = global_position
+
+		
+		var mouse_pos = get_global_mouse_position()
+		projectile.direction = (mouse_pos - global_position).normalized()
+
+		projectile.damage = GameData.tower_info[tower_type]["damage"]
+
+		
+		await get_tree().create_timer(rof).timeout
+		tower_ready = true
+	else:
+		tower_ready = false
+		var damage = GameData.tower_info[tower_type]["damage"]
+		enemy.on_take_damage(damage)
+
+		var rof = GameData.tower_info[tower_type]["rate"]
+		await get_tree().create_timer(rof).timeout
+
+		tower_ready = true
+
+
 
 func select_enemy() -> void:
 	var enemy_progress_array = []

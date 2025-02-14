@@ -33,5 +33,11 @@ func on_take_damage(damage: int) -> void:
 	if hp == 0:
 		on_killed()
 
+
+
 func on_killed() -> void:
+	var game_scene = get_tree().get_root().find_child("SceneHandler", true, false).find_child("GameScene", true, false)
+	if game_scene:
+		game_scene.player_money += 20
+		game_scene.update_money_display()
 	queue_free()

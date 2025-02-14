@@ -3,9 +3,14 @@ extends Node2D
 signal game_end(result)
 
 var map_node
-@onready var ui = %UI 
+@onready var ui = get_tree().get_root().find_child("SceneHandler", true, false).find_child("GameScene", true, false).find_child("UI", true, false)
+@onready var hud = ui.get_node("HUD") if ui else null
+@onready var status_bar = hud.get_node("Status_bar") if hud else null
+@onready var hbox_container = status_bar.get_node("Hbox_container") if status_bar else null
+@onready var money_label = hbox_container.get_node("Money") if hbox_container else null
 
 var player_hp = 100
+var player_money = 100
 
 func _ready():
 	map_node = get_node('Map1')
@@ -13,7 +18,8 @@ func _ready():
 	for i in get_tree().get_nodes_in_group('build_buttons'):
 		i.button_down.connect(initiate_build_mode.bind(i.get_name()))
 		
-		
+
+
 func _process(delta: float) -> void:
 	if build_mode:
 		update_tower_preview()
@@ -59,12 +65,30 @@ func update_tower_preview():
 	
 func verify_and_build():
 	if build_valid:
-		var new_tower = load('res://Scenes/Turrets/' + build_type + '.tscn').instantiate()
-		new_tower.position = build_location
-		new_tower.built = true
-		new_tower.tower_type = build_type
-		map_node.get_node('Towers').add_child(new_tower, true)
-		map_node.get_node('TowerExclusion').set_cell(build_tile, 0, Vector2i(0, 1))
+		var tower_cost = GameData.tower_info[build_type]['cost']
+		
+		if player_money >= tower_cost:
+			player_money -= tower_cost  
+			update_money_display()  
+			
+			var new_tower = load('res://Scenes/Turrets/' + build_type + '.tscn').instantiate()
+			new_tower.position = build_location
+			new_tower.built = true
+			new_tower.tower_type = build_type
+			map_node.get_node('Towers').add_child(new_tower, true)
+			map_node.get_node('TowerExclusion').set_cell(build_tile, 0, Vector2i(0, 1))
+		else:
+			print("Dinheiro insuficiente!")  
+
+func update_money_display():
+	if money_label:
+		money_label.text = str(player_money)
+	else:
+		print("Erro: Nó Money não encontrado!")  
+
+
+
+
 	
 func cancel_build_mode():
 	build_mode = false
