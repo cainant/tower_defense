@@ -108,22 +108,22 @@ var wave_ready = false
 var waves = {
 	0: {  # Wave 0
 		"enemies": {
-			"blue_tank": 1,
+			"blue_tank": 6,
 			"airplane": 0
 		},
 		"spawn_interval": 1.0
 	},
 	1: {  # Wave 1
 		"enemies": {
-			"blue_tank": 14,
-			"airplane": 3
+			"blue_tank": 1,
+			"airplane": 0
 		},
 		"spawn_interval": 0.8
 	},
 	2: {  # Wave 2
 		"enemies": {
-			"blue_tank": 20,
-			"airplane": 5
+			"blue_tank": 2,
+			"airplane": 0
 		},
 		"spawn_interval": 0.6
 	}
@@ -135,8 +135,11 @@ func start_new_wave():
 	spawn_enemies(wave_data)
 
 func start_next_wave():
-	print("Iniciando nova wave...")
+	if game_over_triggered:
+		return  # Evita iniciar nova wave após game over
 	
+	print("Iniciando nova wave...")
+
 	if active_enemies > 0:
 		print("ERRO: Tentando iniciar uma wave enquanto ainda há inimigos!")
 		return
@@ -150,6 +153,9 @@ func start_next_wave():
 	# Inicia a nova wave
 	start_new_wave()
 	print("Nova wave iniciada! Inimigos na cena:", active_enemies)
+
+
+
 
 func retrieve_wave_data():
 	var wave_data = []
@@ -190,29 +196,52 @@ func spawn_enemies(wave_data):
 		print("Conectado sinal life_damage para:", enemy[0])
 		print("Inimigo spawnado:", enemy[0])
 		map_node.get_node('Path').add_child(new_enemy, true)
-		active_enemies += 1  # Aumenta o contador de inimigos ativos
-		await get_tree().create_timer(enemy[1]).timeout
+		
+		# Atualiza o contador de inimigos
+		active_enemies += 1  
+		total_enemies_in_wave -= 1  # Diminui pois já foi spawnado!
+
+		await get_tree().create_timer(enemy[1]).timeout  # Espera o intervalo do próximo spawn
+
+
+var game_over_triggered = false  # Adicione essa variável no topo do script
 
 func life_base_damage(damage):
+	if game_over_triggered:
+		return  # Evita chamar várias vezes
+
 	print("Dano recebido na base:", damage)
-	
-	var new_hp = player_hp - damage
-	player_hp = max(new_hp, 0)
-	
+	player_hp = max(player_hp - damage, 0)
 	print("Nova vida do jogador:", player_hp)
-	
-	if player_hp <= 0:
-		print("Jogo encerrado, vida chegou a zero.")
-		emit_signal("game_end", true)
+
+	if player_hp <= 0 and not game_over_triggered:
+		game_over_triggered = true
+		print("Vida zerada. Encerrando jogo...")
+
+		# Cancela qualquer processamento futuro antes de deletar a cena
+		set_process(false)
+		set_physics_process(false)
+
+		var scene_handler = get_tree().get_root().find_child("SceneHandler", true, false)
+		if scene_handler:
+			queue_free()  # Remove a GameScene antes de ir ao menu
+			await get_tree().process_frame  # Aguarda um frame para evitar conflitos
+			scene_handler.load_main_menu()  
+		else:
+			print("Erro: SceneHandler não encontrado!")
 	else:
 		get_node('UI').update_hp_bar(player_hp)
 
+
+
+
+
+
 func _on_enemy_removed():
 	active_enemies -= 1
-	print("Inimigo removido! Restantes:", active_enemies)
+	print("Inimigo removido! Restantes:", active_enemies, "Total spawnados restantes:", total_enemies_in_wave)
 
-	# Verifica se todos os inimigos foram derrotados E se todos foram spawnados
 	if active_enemies <= 0 and total_enemies_in_wave <= 0:
 		print("Todos os inimigos foram derrotados. Iniciando próxima wave...")
-		current_wave += 1  # Incrementa a wave atual
+		current_wave += 1  
 		start_next_wave()
