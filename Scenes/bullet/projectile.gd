@@ -21,13 +21,16 @@ func _ready():
 
 
 func _on_body_entered(body):
-	var enemy = body.get_parent() 
+	var enemy = body.get_parent()  
+	#print("Projétil colidiu com:", enemy)  # <-- Adiciona um print para debug
 
-	if enemy.has_method("on_take_damage"):  
+	if enemy and enemy.has_method("on_take_damage"):  
+		#print("Inimigo válido! Aplicando dano.")
 		enemy.on_take_damage(damage)
 		queue_free()  
 	else:
 		print("O corpo atingido não possui 'on_take_damage'.")
+
 
 
 

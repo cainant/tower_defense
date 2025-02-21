@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://sawj7tnx4g6f"]
+[gd_scene load_steps=6 format=3 uid="uid://sawj7tnx4g6f"]
 
 [ext_resource type="Script" path="res://Scenes/Turrets/minigun_tier_1.gd" id="1_6f4pl"]
 [ext_resource type="Texture2D" uid="uid://bo3ibwri4nfn7" path="res://Assets/Towers/towerDefense_tile181.png" id="2_mq1b6"]
 [ext_resource type="Texture2D" uid="uid://de3iibad0vvt3" path="res://Assets/Towers/towerDefense_tile250.png" id="3_knct0"]
+[ext_resource type="Texture2D" uid="uid://dwlc5ase1bgwq" path="res://Assets/UI/HPbar.jpg" id="4_p2cy1"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_5m42o"]
 
@@ -26,6 +27,18 @@ position = Vector2(41, -6)
 
 [node name="RangeShape" type="CollisionShape2D" parent="Range"]
 shape = SubResource("CircleShape2D_5m42o")
+
+[node name="hp_bar" type="TextureProgressBar" parent="."]
+offset_left = -25.0
+offset_top = -35.0
+offset_right = 25.0
+offset_bottom = -30.0
+value = 50.0
+nine_patch_stretch = true
+texture_under = ExtResource("4_p2cy1")
+texture_progress = ExtResource("4_p2cy1")
+tint_under = Color(0.226707, 0.226707, 0.226707, 1)
+tint_progress = Color(0.396983, 0.637314, 0.240873, 1)
 
 [connection signal="body_entered" from="Range" to="." method="_on_range_body_entered"]
 [connection signal="body_exited" from="Range" to="." method="_on_range_body_exited"]

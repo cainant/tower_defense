@@ -38,17 +38,29 @@ func update_hp_bar(player_hp):
 	var hp_bar_tween = create_tween()
 	hp_bar_tween.tween_property(hp_bar, "value", player_hp, 0.1).set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN)
 	#search for godot tween cheat sheet to understand better transistion_type and easing type
-
+	
 func _on_pause_play_pressed() -> void:
-	if self.get_parent().build_mode:
-		self.get_parent().cancel_build_mode()
-	if self.get_tree().is_paused():
-		self.get_tree().paused = false
-	elif self.get_parent().current_wave == 0:
-		get_parent().current_wave = 1
-		get_parent().start_new_wave()
+	print("Botão Play/Pause pressionado!")
+	
+	if get_parent().build_mode:
+		get_parent().cancel_build_mode()
+	
+	if get_tree().paused:
+		print("Jogo está pausado! Despausando...")
+		get_tree().paused = false
+		
+		# Inicia a wave imediatamente ao despausar, se não houver inimigos ativos
+		if get_parent().active_enemies <= 0:
+			print("Nenhum inimigo restante! Iniciando próxima wave...")
+			get_parent().start_next_wave()
+		else:
+			print("Ainda há inimigos vivos, apenas despausando o jogo.")
 	else:
-		self.get_tree().paused = true
+		print("Jogo já estava rodando, então será pausado agora.")
+		get_tree().paused = true
+
+
+
 
 
 func _on_fast_foward_pressed() -> void:

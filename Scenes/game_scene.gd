@@ -14,10 +14,10 @@ var player_money = 100
 
 func _ready():
 	map_node = get_node('Map1')
+	current_wave = 0  # Inicializa a wave com o valor 0
 	
 	for i in get_tree().get_nodes_in_group('build_buttons'):
 		i.button_down.connect(initiate_build_mode.bind(i.get_name()))
-		
 
 
 func _process(delta: float) -> void:
@@ -76,6 +76,7 @@ func verify_and_build():
 			new_tower.built = true
 			new_tower.tower_type = build_type
 			map_node.get_node('Towers').add_child(new_tower, true)
+			new_tower.add_to_group("towers")
 			map_node.get_node('TowerExclusion').set_cell(build_tile, 0, Vector2i(0, 1))
 		else:
 			print("Dinheiro insuficiente!")  
@@ -100,32 +101,118 @@ func cancel_build_mode():
 ## Wave functions
 ##
 var current_wave = 0
-var enemies_in_wave
+var active_enemies = 0
+var total_enemies_in_wave = 0  # Total de inimigos na wave atual
+var wave_active = false
+var wave_ready = false
+var waves = {
+	0: {  # Wave 0
+		"enemies": {
+			"blue_tank": 1,
+			"airplane": 0
+		},
+		"spawn_interval": 1.0
+	},
+	1: {  # Wave 1
+		"enemies": {
+			"blue_tank": 14,
+			"airplane": 3
+		},
+		"spawn_interval": 0.8
+	},
+	2: {  # Wave 2
+		"enemies": {
+			"blue_tank": 20,
+			"airplane": 5
+		},
+		"spawn_interval": 0.6
+	}
+}
 
 func start_new_wave():
 	var wave_data = retrieve_wave_data()
 	await get_tree().create_timer(0.2).timeout
 	spawn_enemies(wave_data)
+
+func start_next_wave():
+	print("Iniciando nova wave...")
 	
+	if active_enemies > 0:
+		print("ERRO: Tentando iniciar uma wave enquanto ainda há inimigos!")
+		return
+
+	# Verifica se há uma wave disponível
+	if not waves.has(current_wave):
+		print("Todas as waves foram concluídas! Jogo encerrado.")
+		emit_signal("game_end", false)  # Emite sinal de vitória
+		return
+
+	# Inicia a nova wave
+	start_new_wave()
+	print("Nova wave iniciada! Inimigos na cena:", active_enemies)
+
 func retrieve_wave_data():
-	var wave_data = [['blue_tank', 3.0], ['blue_tank', 0.1]]
-	current_wave += 1
-	enemies_in_wave = wave_data.size()
+	var wave_data = []
 	
+	if not waves.has(current_wave):
+		print("ERRO: Tentou acessar uma wave inexistente!", current_wave)
+		return []  # Retorna uma lista vazia para evitar crash
+
+	var wave_info = waves[current_wave]
+	print("Recuperando dados da wave:", current_wave)
+
+	for enemy_type in wave_info["enemies"]:
+		var quantity = wave_info["enemies"][enemy_type]
+		print("Inimigo:", enemy_type, "Quantidade:", quantity)
+		for i in range(quantity):
+			wave_data.append([enemy_type, wave_info["spawn_interval"]])
+
+	total_enemies_in_wave = wave_data.size()  # Define o total de inimigos na wave
+	print("Total de inimigos na wave:", total_enemies_in_wave)
 	return wave_data
-	
+
 func spawn_enemies(wave_data):
+	print("Spawnando inimigos...")
+
 	for enemy in wave_data:
-		var new_enemy = load("res://Scenes/Enemies/%s.tscn" % [enemy[0]]).instantiate()
+		var enemy_scene
+		if enemy[0] == "airplane":  
+			enemy_scene = load("res://Scenes/Enemies/airplane.tscn")
+		else:  
+			enemy_scene = load("res://Scenes/Enemies/%s.tscn" % [enemy[0]])
+		if enemy_scene == null:
+			print("Erro ao carregar cena do inimigo:", enemy[0])
+			continue  
+		var new_enemy = enemy_scene.instantiate()
+		new_enemy.position = Vector2(-37, 609)  
 		new_enemy.connect("life_damage", Callable(self, "life_base_damage"))
+		new_enemy.connect("tree_exited", Callable(self, "_on_enemy_removed"))  # Conecta quando o inimigo morre
+		print("Conectado sinal life_damage para:", enemy[0])
+		print("Inimigo spawnado:", enemy[0])
 		map_node.get_node('Path').add_child(new_enemy, true)
+		active_enemies += 1  # Aumenta o contador de inimigos ativos
 		await get_tree().create_timer(enemy[1]).timeout
 
 func life_base_damage(damage):
+	print("Dano recebido na base:", damage)
+	
 	var new_hp = player_hp - damage
 	player_hp = max(new_hp, 0)
 	
+	print("Nova vida do jogador:", player_hp)
+	
 	if player_hp <= 0:
-		emit_signal("game_end", false)
+		print("Jogo encerrado, vida chegou a zero.")
+		emit_signal("game_end", true)
 	else:
 		get_node('UI').update_hp_bar(player_hp)
+
+func _on_enemy_removed():
+	active_enemies -= 1
+	print("Inimigo removido! Restantes:", active_enemies)
+
+	# Verifica se todos os inimigos foram derrotados E se todos foram spawnados
+	if active_enemies <= 0 and total_enemies_in_wave <= 0:
+		print("Todos os inimigos foram derrotados. Iniciando próxima wave...")
+		current_wave += 1  # Incrementa a wave atual
+		start_next_wave()

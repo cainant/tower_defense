@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://doxuodxipl1cm"]
+[gd_scene load_steps=7 format=3 uid="uid://doxuodxipl1cm"]
 
 [ext_resource type="Texture2D" uid="uid://iqpngu4k0kgb" path="res://Assets/Towers/towerDefense_tile180.png" id="1_tihx1"]
 [ext_resource type="Script" path="res://Scenes/Turrets/missile_tier_1.gd" id="1_y8k18"]
 [ext_resource type="Texture2D" uid="uid://cdx2e3ihni5lj" path="res://Assets/Towers/towerDefense_tile228.png" id="2_2hgcw"]
 [ext_resource type="Texture2D" uid="uid://dj8pilwv1urma" path="res://Assets/Towers/towerDefense_tile251.png" id="3_rrmtv"]
+[ext_resource type="Texture2D" uid="uid://dwlc5ase1bgwq" path="res://Assets/UI/HPbar.jpg" id="5_j3rto"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_u2805"]
 
@@ -28,6 +29,18 @@ texture = ExtResource("3_rrmtv")
 
 [node name="RangeShape" type="CollisionShape2D" parent="Range"]
 shape = SubResource("CircleShape2D_u2805")
+
+[node name="hp_bar" type="TextureProgressBar" parent="."]
+offset_left = -25.0
+offset_top = -35.0
+offset_right = 25.0
+offset_bottom = -30.0
+value = 50.0
+nine_patch_stretch = true
+texture_under = ExtResource("5_j3rto")
+texture_progress = ExtResource("5_j3rto")
+tint_under = Color(0.226707, 0.226707, 0.226707, 1)
+tint_progress = Color(0.396983, 0.637314, 0.240873, 1)
 
 [connection signal="body_entered" from="Range" to="." method="_on_range_body_entered"]
 [connection signal="body_exited" from="Range" to="." method="_on_range_body_exited"]

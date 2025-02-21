@@ -11,7 +11,8 @@ var life_damage_value = 50
 func _ready():
 	hp_bar.max_value = hp
 	hp_bar.value = hp
-	
+
+
 func _physics_process(delta: float) -> void:
 	move(delta)
 	check_end_path()

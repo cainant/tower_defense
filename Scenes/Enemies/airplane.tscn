@@ -1,0 +1,37 @@
+[gd_scene load_steps=5 format=3 uid="uid://cpax6xtd37h3v"]
+
+[ext_resource type="Script" path="res://Scenes/Enemies/airplane.gd" id="1_4li7n"]
+[ext_resource type="Texture2D" uid="uid://bwhwxwavky6rn" path="res://Assets/Enemies/ship_0000.png" id="1_xxjsg"]
+[ext_resource type="Texture2D" uid="uid://dwlc5ase1bgwq" path="res://Assets/UI/HPbar.jpg" id="3_gcpfv"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_eamom"]
+size = Vector2(28, 20)
+
+[node name="Airplane" type="Node2D"]
+visibility_layer = 2
+script = ExtResource("1_4li7n")
+
+[node name="CharacterBody2D" type="CharacterBody2D" parent="."]
+collision_mask = 2
+
+[node name="Timer" type="Timer" parent="CharacterBody2D"]
+wait_time = 5.0
+autostart = true
+
+[node name="Sprite2D" type="Sprite2D" parent="CharacterBody2D"]
+texture = ExtResource("1_xxjsg")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D"]
+shape = SubResource("RectangleShape2D_eamom")
+
+[node name="hp_bar" type="TextureProgressBar" parent="."]
+offset_left = -26.0
+offset_top = -19.0
+offset_right = 24.0
+offset_bottom = -14.0
+value = 50.0
+nine_patch_stretch = true
+texture_under = ExtResource("3_gcpfv")
+texture_progress = ExtResource("3_gcpfv")
+tint_under = Color(0.226707, 0.226707, 0.226707, 1)
+tint_progress = Color(0.287536, 0.288231, 0.687568, 1)
