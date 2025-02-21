@@ -108,22 +108,22 @@ var wave_ready = false
 var waves = {
 	0: {  # Wave 0
 		"enemies": {
-			"blue_tank": 6,
-			"airplane": 0
+			"blue_tank": 15,
+			"airplane": 2
 		},
 		"spawn_interval": 1.0
 	},
 	1: {  # Wave 1
 		"enemies": {
-			"blue_tank": 1,
-			"airplane": 0
+			"blue_tank": 20,
+			"airplane": 5
 		},
 		"spawn_interval": 0.8
 	},
 	2: {  # Wave 2
 		"enemies": {
-			"blue_tank": 2,
-			"airplane": 0
+			"blue_tank": 25,
+			"airplane": 15
 		},
 		"spawn_interval": 0.6
 	}
@@ -239,9 +239,9 @@ func life_base_damage(damage):
 
 func _on_enemy_removed():
 	active_enemies -= 1
-	print("Inimigo removido! Restantes:", active_enemies, "Total spawnados restantes:", total_enemies_in_wave)
+	#print("Inimigo removido Restantes:", active_enemies, "Total spawnados restantes:", total_enemies_in_wave)
 
 	if active_enemies <= 0 and total_enemies_in_wave <= 0:
-		print("Todos os inimigos foram derrotados. Iniciando próxima wave...")
+	#	print("Todos os inimigos foram derrotados")
 		current_wave += 1  
 		start_next_wave()
