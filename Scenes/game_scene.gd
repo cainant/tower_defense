@@ -1,6 +1,6 @@
 extends Node2D
 
-signal game_end(result)
+signal game_end(win)
 
 @onready var map_node = load("res://Scenes/Maps/map_1.tscn").instantiate()
 @onready var ui = get_tree().get_root().find_child("SceneHandler", true, false).find_child("GameScene", true, false).find_child("UI", true, false)
@@ -14,7 +14,7 @@ var player_money = 100
 var current_map = 0
 
 func _ready():
-	get_tree().get_root().add_child(map_node)
+	self.add_child(map_node)
 	get_tree().paused = true
 	current_wave = 0
 	
@@ -33,13 +33,16 @@ func _unhandled_input(event: InputEvent) -> void:
 		cancel_build_mode()
 	
 func _on_new_map():
-	get_tree().get_root().remove_child(map_node)
+	get_tree().paused = true
+	hud.find_child('PausePlay', true).button_pressed = false
+	
+	self.remove_child(map_node)
 	map_node.queue_free()
 	map_node = load("res://Scenes/Maps/map_2.tscn").instantiate()
-	get_tree().get_root().add_child(map_node)
+	self.add_child(map_node)
 	current_map += 1
-	get_tree().paused = true
-	await get_tree().create_timer(2)
+	
+	await get_tree().create_timer(2).timeout
 	
 	current_wave = 0
 	waves = WaveData.wave_info[current_map]
@@ -126,8 +129,8 @@ func start_next_wave():
 		print("ERRO: Tentando iniciar uma wave enquanto ainda há inimigos!")
 		return
 
-	if not waves.has(current_wave):
-		emit_signal("game_end", false)
+	if not waves.has(current_wave) and current_map >= 2:
+		emit_signal("game_end", true)
 		return
 
 	start_new_wave()
@@ -136,11 +139,9 @@ func retrieve_wave_data():
 	var wave_data = []
 	
 	if not waves.has(current_wave):
-		print("ERRO: Tentou acessar uma wave inexistente!", current_wave)
 		return []  
 
 	var wave_info = waves[current_wave]
-	print(wave_info)
 
 	for enemy_type in wave_info["enemies"]:
 		var quantity = wave_info["enemies"][enemy_type]
@@ -182,17 +183,12 @@ func life_base_damage(damage):
 
 	if player_hp <= 0 and not game_over_triggered:
 		game_over_triggered = true
+		get_tree().paused = true
 
 		set_process(false)
 		set_physics_process(false)
 
-		var scene_handler = get_tree().get_root().find_child("SceneHandler", true, false)
-		if scene_handler:
-			queue_free() 
-			await get_tree().process_frame 
-			scene_handler.load_main_menu()  
-		else:
-			print("Erro: SceneHandler não encontrado!")
+		game_end.emit(false)
 	else:
 		get_node('UI').update_hp_bar(player_hp)
 

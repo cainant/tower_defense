@@ -1,0 +1,60 @@
+[gd_scene load_steps=6 format=3 uid="uid://byy3aing8xiwo"]
+
+[ext_resource type="Script" path="res://Scenes/UI/game_over.gd" id="1_2vn11"]
+[ext_resource type="Texture2D" uid="uid://ce05rvc0h8b4n" path="res://Assets/UI/Art/main_menu_background.png" id="1_x0cbs"]
+[ext_resource type="Texture2D" uid="uid://be5pcqtqa0m53" path="res://Assets/UI/Buttons/button_rectangle_flat.png" id="2_xttog"]
+[ext_resource type="Texture2D" uid="uid://b180tmliu5wvy" path="res://Assets/UI/Buttons/button_rectangle_gradient.png" id="3_75ov0"]
+[ext_resource type="Theme" uid="uid://esj0ngjbhb5f" path="res://Assets/Themes/label_theme.tres" id="4_4lug3"]
+
+[node name="GameOver" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_2vn11")
+
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_x0cbs")
+
+[node name="ExitButton" type="TextureButton" parent="."]
+custom_minimum_size = Vector2(350, 75)
+layout_mode = 2
+offset_left = 423.0
+offset_top = 574.0
+offset_right = 773.0
+offset_bottom = 649.0
+size_flags_horizontal = 0
+texture_normal = ExtResource("2_xttog")
+texture_pressed = ExtResource("3_75ov0")
+stretch_mode = 0
+
+[node name="Label" type="Label" parent="ExitButton"]
+texture_filter = 2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -5.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("4_4lug3")
+text = "BACK TO MAIN MENU"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MainTitle" type="Label" parent="."]
+layout_mode = 0
+offset_left = 465.0
+offset_top = 228.0
+offset_right = 685.0
+offset_bottom = 263.0
+theme = ExtResource("4_4lug3")
+text = "VOCE PERDEU"

@@ -36,6 +36,7 @@ func _physics_process(delta: float) -> void:
 		if tower_type == "minigun_tier_1":
 			if tower_ready:
 				shoot()
+				turn()
 		elif enemy_array.size() != 0:
 			select_enemy()
 			if enemy != null: 
@@ -48,6 +49,8 @@ func _physics_process(delta: float) -> void:
 func turn():
 	if enemy != null:
 		get_node("Turret").look_at(enemy.position)
+	else:
+		get_node("Turret").look_at(get_global_mouse_position())
 
 func shoot():
 	if tower_type == "minigun_tier_1":

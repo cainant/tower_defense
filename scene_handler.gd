@@ -21,7 +21,7 @@ func load_main_menu():
 		print("ERRO: ExitButton não encontrado!")
 
 func _on_new_game_pressed():
-	var main_menu = get_node_or_null("UI/MainMenu")
+	var main_menu = get_node_or_null("MainMenu")
 	if main_menu:
 		main_menu.queue_free()
 
@@ -33,16 +33,20 @@ func _on_new_game_pressed():
 func _on_exit_pressed():
 	get_tree().quit()
 
-func on_game_end(result: bool):
+func on_game_end(win: bool):
 	var game_scene = get_node_or_null("GameScene")
 	if game_scene:
 		game_scene.queue_free()
 
-	if result: 
-		var game_win_scene = load("res://Scenes/UI/game_win.tscn").instantiate()
-		game_win_scene.name = "GameWin"
-		game_win_scene.connect("return_to_menu", Callable(self, "_on_return_to_menu"))
-		add_child(game_win_scene)
+	var game_over_scene = load("res://Scenes/UI/game_over.tscn").instantiate()
+	game_over_scene.name = "GameWin"
+	game_over_scene.find_child('MainTitle', true).text = 'You win!' if win else 'You lose.'
+	
+	add_child(game_over_scene)
+	
+	var exit_main_menu_button = game_over_scene.get_node_or_null("ExitButton/")
+	if exit_main_menu_button:
+		exit_main_menu_button.button_down.connect(load_main_menu)
 
 func _on_retry_game():
 	var game_over_scene = get_node_or_null("GameOver")
@@ -52,12 +56,3 @@ func _on_retry_game():
 		print("ERRO: GameOver não encontrado!")
 
 	_on_new_game_pressed()
-
-func _on_return_to_menu():
-	var game_over_scene = get_node_or_null("GameOver")
-	if game_over_scene:
-		game_over_scene.queue_free()
-	else:
-		print("ERRO: GameOver não encontrado!")
-
-	load_main_menu()
