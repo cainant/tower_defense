@@ -2,7 +2,6 @@ extends CanvasLayer
 
 @onready var hp_bar = get_node("HUD/Status_bar/Hbox_container/Hp_bar")
 
-
 var red_color = Color(0.863, 0, 0.031, 0.75)
 var green_color = Color(0, 0.615, 0.268, .95)
 
@@ -40,28 +39,16 @@ func update_hp_bar(player_hp):
 	#search for godot tween cheat sheet to understand better transistion_type and easing type
 	
 func _on_pause_play_pressed() -> void:
-	print("Botão Play/Pause pressionado!")
-	
 	if get_parent().build_mode:
 		get_parent().cancel_build_mode()
 	
 	if get_tree().paused:
-		print("Jogo está pausado! Despausando...")
 		get_tree().paused = false
 		
-		# Inicia a wave imediatamente ao despausar, se não houver inimigos ativos
 		if get_parent().active_enemies <= 0:
-			print("Nenhum inimigo restante! Iniciando próxima wave...")
 			get_parent().start_next_wave()
-		else:
-			print("Ainda há inimigos vivos, apenas despausando o jogo.")
 	else:
-		print("Jogo já estava rodando, então será pausado agora.")
 		get_tree().paused = true
-
-
-
-
 
 func _on_fast_foward_pressed() -> void:
 	Engine.set_time_scale(1.0 if Engine.get_time_scale() == 2.0 else 2.0)

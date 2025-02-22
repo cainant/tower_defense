@@ -38,15 +38,11 @@ func on_game_end(result: bool):
 	if game_scene:
 		game_scene.queue_free()
 
-	if result:  # Se o jogador venceu, carrega a tela de vitória
+	if result: 
 		var game_win_scene = load("res://Scenes/UI/game_win.tscn").instantiate()
 		game_win_scene.name = "GameWin"
 		game_win_scene.connect("return_to_menu", Callable(self, "_on_return_to_menu"))
 		add_child(game_win_scene)
-
-
-
-
 
 func _on_retry_game():
 	var game_over_scene = get_node_or_null("GameOver")

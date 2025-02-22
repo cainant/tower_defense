@@ -14,14 +14,12 @@ func _ready():
 	hp_bar.max_value = hp
 	hp_bar.value = hp
 	
-	# Criar e configurar o timer para o congelamento
 	freeze_timer = Timer.new()
-	freeze_timer.wait_time = 0
+	freeze_timer.wait_time = 1
 	freeze_timer.one_shot = true
 	freeze_timer.timeout.connect(_on_freeze_end)
 	add_child(freeze_timer)
 	
-	# Adicionar ao grupo de inimigos
 	add_to_group("enemies")
 
 func _physics_process(delta: float) -> void:
@@ -60,8 +58,6 @@ func on_killed() -> void:
 
 	queue_free()
 
-
-# Função para congelar o inimigo
 func freeze(duration: float):
 	if is_frozen:
 		return

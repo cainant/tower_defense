@@ -8,9 +8,7 @@ var tower_ready = true
 var hp: int = 100  # Vida da torre
 var max_hp: int = 100  # Vida máxima
 
-@onready var hp_bar = get_node("hp_bar")  # Referência à barra de vida
-
-
+@onready var hp_bar = get_node("hp_bar")  
 
 func _ready():
 	if hp_bar:
@@ -25,16 +23,13 @@ func _ready():
 func take_damage(amount: int):
 	hp = max(hp - amount, 0)
 	if hp_bar:
-		hp_bar.value = hp  # Atualiza a barra de vida
+		hp_bar.value = hp 
 
 	if hp == 0:
 		on_destroyed()
 
-
 func on_destroyed():
-	queue_free()  # Remove a torre da cena
-
-
+	queue_free()  
 
 func _physics_process(delta: float) -> void:
 	if built:
@@ -43,7 +38,7 @@ func _physics_process(delta: float) -> void:
 				shoot()
 		elif enemy_array.size() != 0:
 			select_enemy()
-			if enemy != null:  # Verifica se enemy não é null
+			if enemy != null: 
 				turn()
 				if tower_ready:
 					shoot()
@@ -53,28 +48,22 @@ func _physics_process(delta: float) -> void:
 func turn():
 	if enemy != null:
 		get_node("Turret").look_at(enemy.position)
-#	else:
-#		print("Nenhum inimigo definido. Não é possível virar a torre.")
 
 func shoot():
 	if tower_type == "minigun_tier_1":
 		tower_ready = false
 		var rof = GameData.tower_info[tower_type]["rate"]
 
-		
 		var projectile = preload("res://Scenes/bullet/projectile.tscn").instantiate()
 		get_parent().add_child(projectile)
 
-		
 		projectile.position = global_position
 
-		
 		var mouse_pos = get_global_mouse_position()
 		projectile.direction = (mouse_pos - global_position).normalized()
 
 		projectile.damage = GameData.tower_info[tower_type]["damage"]
 
-		
 		await get_tree().create_timer(rof).timeout
 		tower_ready = true
 	else:
@@ -87,12 +76,10 @@ func shoot():
 
 		tower_ready = true
 
-
-
 func select_enemy() -> void:
 	var valid_enemies = []
 	for enemy in enemy_array:
-		if enemy.has_method("get_progress"):  # Verifica se o inimigo tem a propriedade progress
+		if enemy.has_method("get_progress"): 
 			valid_enemies.append(enemy)
 	
 	if valid_enemies.size() > 0:
@@ -104,8 +91,7 @@ func select_enemy() -> void:
 		var enemy_idx = enemy_progress_array.find(max_progress)
 		enemy = valid_enemies[enemy_idx]
 	else:
-		enemy = null  # Define enemy como null se nenhum inimigo for encontrado
-		#print("Nenhum inimigo válido encontrado em enemy_array.")
+		enemy = null 
 
 func _on_range_body_entered(body: Node2D) -> void:
 	enemy_array.push_back(body.get_parent())
