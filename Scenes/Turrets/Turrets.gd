@@ -1,4 +1,4 @@
-extends Node2D
+class_name Turrets extends Node2D
 
 var enemy_array = []
 var built = false
