@@ -81,14 +81,14 @@ func shoot():
 
 func select_enemy() -> void:
 	var valid_enemies = []
-	for enemy in enemy_array:
-		if enemy.has_method("get_progress"): 
-			valid_enemies.append(enemy)
+	for enemy_uni in enemy_array:
+		if enemy_uni.has_method("get_progress"): 
+			valid_enemies.append(enemy_uni)
 	
 	if valid_enemies.size() > 0:
 		var enemy_progress_array = []
-		for enemy in valid_enemies:
-			enemy_progress_array.append(enemy.progress)
+		for enemy_uni in valid_enemies:
+			enemy_progress_array.append(enemy_uni.progress)
 		
 		var max_progress = enemy_progress_array.max()
 		var enemy_idx = enemy_progress_array.find(max_progress)

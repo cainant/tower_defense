@@ -36,6 +36,7 @@ func on_take_damage(amount: int):
 
 	if hp == 0:
 		on_destroyed()
+		on_killed()
 
 func on_killed() -> void:
 	var game_scene = get_tree().get_root().find_child("SceneHandler", true, false).find_child("GameScene", true, false)
